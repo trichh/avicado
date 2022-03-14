@@ -1,0 +1,17 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "[Redacted] API Import Client",
+  "main": "src/index.js",
+  "scripts": {
+    "import": "node src/runner.js",
+    "debug": "node --inspect-brk src/runner.js",
+    "status": "node src/status.js"
+  },
+  "author": "cg@avicado.com",
+  "license": "UNLICENSED",
+  "devDependencies": {},
+  "dependencies": {
+    "node-fetch": "^2.6.6"
+  }
+}
