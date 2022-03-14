@@ -1,5 +1,5 @@
 const { readFileSync } = require('fs');
-const { isFalsy, isTruthy } = require('./utils');
+const { isFalsy, isTruthy, parseDataCenter } = require('./utils');
 const path = require('path');
 
 const load = (filepath) => {
@@ -56,7 +56,7 @@ class DataClient {
    * on the api this value must be true.
    */
   enableImport() {
-    this.dataCenters = this.dataCenters.map((dc) => ({ ...dc, import: true }));
+    this.dataCenters = this.dataCenters.map((dc) => parseDataCenter(dc, this.buildings));
   }
 
 }

@@ -27,11 +27,17 @@ class ApiClient {
    * @returns {Promise<unknown>}
    */
   async create(body) {
-    return fetch(this.endpoint(BASE_RESOURCE_NAME), {
-      body: typeof body === 'object' ? JSON.stringify(body) : body,
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-    });
+    const createFetch = () => {
+      return fetch(this.endpoint(BASE_RESOURCE_NAME), {
+        body: typeof body === 'object' ? JSON.stringify(body) : body,
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+      }).then((res) => {
+        if (res.ok) return res;
+        return createFetch();
+      });
+    }
+    return createFetch();
   }
 
   /**
@@ -41,11 +47,17 @@ class ApiClient {
    * @returns {Promise<unknown>}
    */
   async update(id, body) {
-    return fetch(this.endpoint(`${BASE_RESOURCE_NAME}/\${id}`, { id }), {
-      body: typeof body === 'object' ? JSON.stringify(body) : body,
-      method: 'PUT',
-      headers: {'Content-Type': 'application/json'},
-    });
+    const updateFetch = () => {
+      return fetch(this.endpoint(`${BASE_RESOURCE_NAME}/\${id}`, { id }), {
+        body: typeof body === 'object' ? JSON.stringify(body) : body,
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+      }).then((res) => {
+        if (res.ok) return res;
+        return updateFetch();
+      });
+    }
+    return updateFetch();
   }
 
   /**

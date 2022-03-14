@@ -175,6 +175,46 @@ const logErrorSummary = (errorSummary) => {
 }
 
 /**
+ * Returns datacenter with correct timestamp, buildings, and import set to true
+ * @param dc
+ * @param buildingsObj
+ */
+const parseDataCenter = (dc, buildingsObj) => {
+  let parsedBuildings = parseBuildings(dc.buildings, dc.buildingIds, buildingsObj);
+  let parsedDate = parseDate(dc.operationalDate);
+  return { ...dc, operationalDate: parsedDate, buildings: parsedBuildings, import: true };
+}
+
+/**
+ * Returns array of buildings
+ * @param building
+ * @param buildingIds
+ * @param buildingsObj
+ */
+const parseBuildings = (building, buildingIds, buildingsObj) => {
+  if (!building) {
+    return buildingIds.reduce((arr, id) => {
+      arr.push(buildingsObj.find(b => b.id === id));
+      return arr;
+    }, []);
+  } else {
+    return building;
+  }
+}
+
+/**
+ * Returns timestamp in ISOString format
+ * @param date
+ */
+const parseDate = (date) => {
+  if (typeof date === "number") {
+    return new Date(date).toISOString();
+  } else {
+    return date;
+  }
+}
+
+/**
  * It's funny. I really can't SEE a lot of these colors, but they're
  * fun to put in logs in any case. It's crazy how a little dash of contrast
  * can make so much difference as you're watching logs go by.
@@ -209,4 +249,4 @@ const colors = {
 };
 
 
-module.exports = { template, isNullish, isFalsy, isTruthy, combineCounts, simplifyResults, isJson, createErrorSummary, logErrorSummary, createValidationSummary, logValidationSummary, colors };
+module.exports = { template, isNullish, isFalsy, isTruthy, combineCounts, simplifyResults, isJson, createErrorSummary, logErrorSummary, createValidationSummary, logValidationSummary, colors, parseDataCenter };

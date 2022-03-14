@@ -65,11 +65,17 @@ class Batch {
     this.sent = 0;
     this.processStart = (new Date()).getTime();
     const { fn } = this;
+    const delayIncrement = 750;
+    let delay = 0;
     try {
       const responses = await Promise.all(this.records.map(async (datacenter) => {
-        this.sent += 1;
-        if (this.options.logProgress) this.logProgress();
-        return Request.perform(datacenter, fn)
+        const promise = new Promise(resolve => setTimeout(resolve, delay)).then(() => Request.perform(datacenter, fn));
+        setTimeout(() => {
+          this.sent += 1;
+          if (this.options.logProgress) this.logProgress();
+        }, delay)
+        delay += delayIncrement;
+        return promise;
       }));
 
       this.simplifiedResults = simplifyResults(responses);
