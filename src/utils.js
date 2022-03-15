@@ -180,8 +180,8 @@ const logErrorSummary = (errorSummary) => {
  * @param buildingsObj
  */
 const parseDataCenter = (dc, buildingsObj) => {
-  let parsedBuildings = parseBuildings(dc.buildings, dc.buildingIds, buildingsObj);
-  let parsedDate = parseDate(dc.operationalDate);
+  const parsedBuildings = parseBuildings(dc.buildings, dc.buildingIds, buildingsObj);
+  const parsedDate = parseDate(dc.operationalDate);
   return { ...dc, operationalDate: parsedDate, buildings: parsedBuildings, import: true };
 }
 
